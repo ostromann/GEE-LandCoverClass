@@ -21,21 +21,27 @@ def initialise_pipe_param_grid(n_features):
     print('cache directory created at:', cachedir)
 
     #Create a scikit-learn pipeline
-    pipe = Pipeline([#('variance_thresh', VarianceThreshold()), #remove constant features
-                     ('scale',RobustScaler()),#one standardisation step
-                     ('reduce_dim', FastICA(whiten=True, tol=0.001)), #one transformation step
+    pipe = Pipeline([('variance_thresh', VarianceThreshold()), #remove constant features
+                     ('scale',MinMaxScaler()),#one standardisation step
+                     ('reduce_dim', SelectKBest(mutual_info_classif)), #one transformation step
                      ('classify', SVC())], #one classification step
                      memory=memory)
                      
-    N_FEATURES = [1, 2, 3, 4, 5, 6, 7, 9, 10]
+    N_FEATURES = [1, 2, 3, 4, 5, 6, 7, 9, 12, 15, 19, 24, 31, 39, 49, 62, 79, 100, 126, 160, 202, 256, 324, 410, 519, 657]
 
     param_grid = [
+#        {
+#            'reduce_dim': [SelectKBest(f_classif)],
+#            'reduce_dim__k': N_FEATURES,
+#            'classify__C': np.logspace(-3,1,5),
+#            'classify__kernel': ['linear'],
+#        }, 
         {
-            'reduce_dim': [LDA()],
-            'reduce_dim__n_components': N_FEATURES,
-            'classify__C': np.logspace(-2,6,9),
+            'reduce_dim': [SelectKBest(chi2)],
+            'reduce_dim__k': N_FEATURES,
+            'classify__C': np.logspace(-1,6,8),
             'classify__kernel': ['rbf'],
-            'classify__gamma': np.logspace(-8,0,9)
+            'classify__gamma': np.logspace(-6,0,7)
         }, 
     ]
     
