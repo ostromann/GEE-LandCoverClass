@@ -1,13 +1,13 @@
-import matplotlib
-
-matplotlib.use('Agg')
-
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import matplotlib.colors as colors
 from matplotlib.colors import Normalize
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+
+#matplotlib.use('Agg')
 
 
 class MidpointNormalize(colors.Normalize):

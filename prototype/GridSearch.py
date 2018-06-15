@@ -8,7 +8,6 @@ import pandas as pd
 from sklearn.datasets import load_digits
 from sklearn.model_selection import GridSearchCV
 from sklearn.model_selection import StratifiedShuffleSplit as SSS
-from sklearn.model_selection import RepeatedStratifiedKFold
 from sklearn.model_selection import StratifiedKFold
 from sklearn.pipeline import Pipeline
 from sklearn.svm import SVC
@@ -30,7 +29,7 @@ from sklearn.preprocessing import RobustScaler
 from os import mkdir
 from os import listdir
 from os.path import isfile, join
-mypath = 'all'
+mypath = 'S1'
 
 onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
     
@@ -38,25 +37,18 @@ onlyfiles = [f for f in listdir(mypath) if isfile(join(mypath, f))]
 sc = MySegments.SegmentCollection(folder = mypath, segments_path=onlyfiles, labels_path = 'labels.csv', classes_path='class_names.csv')
 idx,X,y = sc.get_labelled()
 
-from sklearn.feature_selection import VarianceThreshold
-
-X = VarianceThreshold().fit_transform(X)
-
-
 #split train and test data, maintaining class distributions
 X_train, X_test, y_train, y_test = train_test_split(X, y, test_size=0.2, random_state=1, stratify = y)
-
-rskf = RepeatedStratifiedKFold(n_splits=3, n_repeats=3, random_state =1)
 
 #from the train data take only 50% -> 40% of total
 #X_train, X_dump, y_train, y_dump2 = train_test_split(X_train, y_train, test_size=0.5, random_state=1, stratify = y_train)
 
-import paramsLDA as MyParams
+import paramsICA as MyParams
 
 pipe, param_grid, now, cachedir = MyParams.initialise_pipe_param_grid(np.shape(X)[1])
 
 #perform grid search with cross validation over given parameters
-grid = GridSearchCV(pipe, cv=rskf, n_jobs=-1, param_grid=param_grid, return_train_score = True, verbose=1)
+grid = GridSearchCV(pipe, cv=7, n_jobs=-1, param_grid=param_grid, return_train_score = True, verbose=1)
 grid.fit(X_train, y_train)
 
 #save the best estimator

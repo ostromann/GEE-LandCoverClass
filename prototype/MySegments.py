@@ -42,17 +42,23 @@ class SegmentCollection:
             segments = pd.read_csv(folder + '/' + path).drop(['ID','.geo'], axis=1)
             out = pd.merge(out, segments, on='system:index')
 
-              
+        #import labelled segments
         self.labelled = out[out['class'] >=0]
         self.labelled_id = self.labelled['system:index']
         self.labelled_target = self.labelled['class']
         self.labelled_data = self.labelled.drop(['system:index','class','.geo'],axis=1)
         
-        #import unlabelled semgnets
+        #import unlabelled segments
         self.unlabelled = out[out['class'] == -1]
         self.unlabelled_id = self.unlabelled['system:index']
         self.unlabelled_target = self.unlabelled['class']
         self.unlabelled_data = self.unlabelled.drop(['system:index','class','.geo'],axis=1)
+        
+        #import all segments
+        self.all = out
+        self.all_id = self.all['system:index']
+        self.all_target = self.all['class']
+        self.all_data = self.all.drop(['system:index','class','.geo'],axis=1)
         
         #list feature names
         self.feature_names = list(out.drop(['system:index', 'class', '.geo'], axis=1))
@@ -67,6 +73,10 @@ class SegmentCollection:
     def get_unlabelled(self):
         'returns idx, data and target as numpy arrays'
         return (self.unlabelled_id.values, self.unlabelled_data.values, self.unlabelled_target.values)
+    
+    def get_all(self):
+        'returns idx, data and target as numpy arrays'
+        return (self.all_id.values, self.all_data.values, self.all_target.values)
     
     def get_classes(self):
         'returns class, label and assigned colour'

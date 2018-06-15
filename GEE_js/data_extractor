@@ -1,0 +1,41 @@
+/**** Start of imports. If edited, may not auto-convert in the playground. ****/
+var ref_points = ee.FeatureCollection("users/stromann/public/STHLM_ref_pts_uniform"),
+    STHLM_segments = ee.FeatureCollection("users/stromann/public/STHLM_segments"),
+    boundingBox = /* color: #d63000 */ee.Geometry.Polygon(
+        [[[17.4, 59.75],
+          [17.4, 59.05],
+          [18.6, 59.05],
+          [18.6, 59.75]]]);
+/***** End of imports. If edited, may not auto-convert in the playground. *****/
+//---------Parameters--------
+var projectPath = ''; //your google drive folder
+var bucketName = ''; //your google cloud storage bucket
+var segments = STHLM_segments.filterBounds(boundingBox);
+
+var parameters_Stockholm = {
+  'Area': boundingBox,
+  'CRS': 'EPSG:32633', //Check which CRS fits the AoI
+  'T0': '2017-06-01', //start time
+  'T1': '2017-08-30', //end time
+  'scale': 30,
+  'tileScale': 16,
+  'relativeOrbitNumberDesc': 22, //Check the necessary Orbit numbers for the AoI
+  'relativeOrbitNumberAsc': 102, //
+  'bufferSize': 15, //radius of the buffer around reference points
+};
+var parameters = parameters_Stockholm; // Set parameters
+
+//load functions from modules
+var myLabeller = require('users/stromann/public:labeller'); //Script for labelling functions
+var myExporter = require('users/stromann/public:exporter'); //Script for exporting functions
+
+var buffers = myLabeller.createBuffers(ref_points.filterBounds(boundingBox),parameters.bufferSize,['Class']);
+var labelled_segments = myLabeller.labelSegments(segments,buffers);
+myExporter.exportCSVtoDrive(labelled_segments, 'labels', projectPath);
+
+Map.centerObject(parameters.Area,11); //Center on AOI
+
+//-------START-----//
+
+//Export without geometry
+//myExporter.exportCSVtoDrive(S1_Asc_Mean_segments, 'S1_Asc_Mean', projectPath);
