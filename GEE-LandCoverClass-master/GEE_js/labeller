@@ -1,0 +1,68 @@
+exports.createBuffers = function(collection, bufferDistance, keepProperties) {
+  //Function to create a buffer around points and keep class property
+  return collection.map(function(f) {
+    // Keep this list of properties.
+    var buffer = f.geometry().buffer(bufferDistance);
+    return ee.Feature(buffer).copyProperties(f, keepProperties);
+  });
+};
+
+exports.labelSegments = function(segments, buffers) {
+  //set class to -1 by default
+  segments = segments.map(function(f) {
+    return f.set('class', ee.Number(-1));
+  });
+  
+  // Find intersecting buffers
+  var intersects = ee.Filter.intersects({
+    leftField: '.geo',
+    rightField: '.geo',
+  });
+  
+  // Create the join.
+  var allJoin = ee.Join.saveAll({
+    matchesKey: 'intersects',
+    measureKey: 'foo'});
+  
+  // Apply the join.
+  var allJoined = allJoin.apply(segments, buffers, intersects);
+  
+  //compute overlap of intersecting buffers and assign class of segment to class of buffer of highest overlap
+  //TODO: Add majority vote on multiple buffers
+  var bestBuffers = allJoined.map(function(f) {
+    var best = ee.FeatureCollection(ee.List(f.get('intersects'))).map(function(g) {
+      var overlapArea = f.intersection(g).area(1);
+      return g.set('overlap', overlapArea);
+    }).sort('overlap', false).first();
+  
+    var clippedArea = f.intersection(best).area(1);
+    return ee.Algorithms.If(clippedArea.gt(ee.Feature(best).area(1).multiply(0.5)),
+        f.set('class', best.get('Class')),
+        f.set('notBest', [clippedArea, ee.Feature(best).area(1)])
+      );
+  });
+  
+  // Filter to get only segments that got assigned a label
+  var assignedLabels = bestBuffers.filter(ee.Filter.gt('class', -1));
+  
+  //Update original segments
+  var contains = ee.Filter.equals({
+    leftField: 'system:index',
+    rightField: 'system:index',
+  });
+  
+  // Apply the join.
+  var invertedJoined = ee.Join.inverted().apply(segments, assignedLabels, contains);
+  
+  //unite the two collections
+  return ee.FeatureCollection([invertedJoined, assignedLabels]).flatten();
+};
+
+
+
+
+
+
+
+
+
