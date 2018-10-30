@@ -3,6 +3,11 @@ Object-based land cover classification with Support Vector Machines and Feature 
 
 These snippets are working with the exported results of these Google Earth Engine scripts: https://earthengine.googlesource.com/users/stromann/LandCoverClass/
 
+The GEE assets for the two case studies of Stockholm and Beijing can be found here:
+https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Stockholm/public
+https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Beijing/public
+
+
 Input to the GEE scripts:
 - Segmented image objects (as asset)
 - Reference Points (as asset)
@@ -24,6 +29,15 @@ Output from the Python scripts:
 - full land cover prediction
 
 The full land cover prediction can be joined back to the segments in GEE for production of a land cover map.
+
+
+Dependencies:
+sklearn
+scipy
+numpy
+pandas
+matplotlib
+statsmodels
 
 
 Status in October 28, 2018:
