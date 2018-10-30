@@ -34,14 +34,23 @@ The full land cover prediction can be joined back to the segments in GEE for pro
 
 
 Dependencies:
+
 sklearn
+
 scipy
+
 numpy
+
 pandas
+
 matplotlib
+
 statsmodels
 
 
+
 Status in October 28, 2018:
+
 Right now this repository is a loose collection of code snippets.
-I'm planning to bring some order into these files and provide an overview of the functions within the next months.
+
+I'm planning to restructure these files and provide an overview of the functions within the next months.
