@@ -4,7 +4,9 @@ Object-based land cover classification with Support Vector Machines and Feature 
 These snippets are working with the exported results of these Google Earth Engine scripts: https://earthengine.googlesource.com/users/stromann/LandCoverClass/
 
 The GEE assets for the two case studies of Stockholm and Beijing can be found here:
+
 https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Stockholm/public
+
 https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Beijing/public
 
 
