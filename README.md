@@ -12,6 +12,8 @@ The GEE assets for the two case studies of Stockholm and Beijing can be found he
 * https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Beijing/public
 
 
+Input - Output:
+---
 Input to the GEE scripts:
 * Segmented image objects (as asset)
 * Reference Points (as asset)
