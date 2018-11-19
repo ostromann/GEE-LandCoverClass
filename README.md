@@ -44,6 +44,7 @@ Dependencies:
 * pandas
 * matplotlib
 * statsmodels
+* openCV
 
 Comments:
 ---
