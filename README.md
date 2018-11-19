@@ -12,10 +12,10 @@ The GEE assets for the two case studies of Stockholm and Beijing can be found he
 * https://code.earthengine.google.com/?asset=users/stromann/LandCoverClass/Beijing/public
 
 
-Input - Output:
+Input - Output
 ---
 Input to the GEE scripts:
-* Segmented image objects (as asset)
+* Segment Polygons (as asset)
 * Reference Points (as asset)
 
 Output from GEE scripts:
@@ -36,7 +36,7 @@ Output from the Python scripts:
 
 The full land cover prediction can be joined back to the segments in GEE for production of a land cover map.
 
-Dependencies:
+Dependencies
 ---
 * sklearn
 * scipy
@@ -46,7 +46,7 @@ Dependencies:
 * statsmodels
 * openCV
 
-Comments:
+Comments
 ---
 Status in October 28, 2018:
 I'm planning to restructure these files and provide an overview of the functions within the next months, latest with the publication in Remote Sensing of Environment's special issue on Google Earth Engine
