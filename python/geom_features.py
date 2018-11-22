@@ -1,3 +1,16 @@
+#!/usr/bin/env python
+"""Compute geometric features from CSV file containing .geo.
+
+Find minimum enclosing circles, minimum area bounding rectangles 
+and fit ellipses to the segments' geometries.
+
+Example:
+        $ python geom_features.py
+
+Todo:
+    * Pass IN_FILE and OUT_FILE as arguments
+    * Use swifter's swiftapply to perform Pandas apply in parallel
+"""
 import numpy as np
 import pandas as pd
 import cv2
@@ -14,11 +27,11 @@ segments = pd.read_csv(IN_FILE).head(100).drop(['system:index', 'class', 'ID'], 
 segments['tuple_coords'] = segments.apply(lambda row: tuple(map(tuple,np.array(json.loads(str(row['.geo']))['coordinates'][0]))),axis=1)
 
 #compute the area
+# Note: due to the cast from floats to integer when reading the coordinates 
+# there is a small deviation between the area calculated by GEE and the area calculated by openCV!
 segments['area'] = segments.apply(lambda row: cv2.contourArea(np.array(row['tuple_coords'], dtype=np.int32)), axis=1)
 
 #fit a minimum enclosing circle
-# Note: due to the cast from floats to integer when reading the coordinates, 
-# there is a small deviation between the area calculated by GEE and the area calculated by openCV!
 segments['minEnclosingCircle_radius'] = segments.apply(lambda row: cv2.minEnclosingCircle(np.array(row['tuple_coords'], dtype=np.int32))[1], axis=1)
 segments['circular_fit'] = segments.apply(lambda row: row['area']/(np.pi*row['minEnclosingCircle_radius']**2), axis=1)
 
