@@ -1,9 +1,3 @@
-
-# coding: utf-8
-
-# In[1]:
-
-
 import pandas as pd
 from os import listdir
 from os.path import isfile, join
@@ -38,5 +32,3 @@ for path in segments_path:
 
     out.drop(['system:index', 'class'], axis=1).to_csv('../ee_exports/aggregate/reduced/'+ path, index=False)
     del(out)
-    
-
