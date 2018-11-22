@@ -1,3 +1,4 @@
+#!/usr/bin/env python
 """Merge multiple CSV files that have the same prefix separated by '-'.
 
 This script merges all CSV files in PATH that share the same prefix,
