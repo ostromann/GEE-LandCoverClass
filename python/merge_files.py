@@ -13,9 +13,7 @@ Example:
 Attributes:
     None.
 Todo:
-    * For module TODOs
-    * You have to also use ``sphinx.ext.todo`` extension
-
+    * Pass PATH as argument (is it more convenient?)
 """
 
 import glob
