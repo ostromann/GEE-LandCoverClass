@@ -1,5 +1,5 @@
 # GEE-LandCoverClass
-Object-based land cover classification with Support Vector Machines and Feature Selection for Google Earth Engine (GEE), Google Compute Engine and Scikit-Learn.
+Object-based land cover classification with Feature Extraction and Feature Selection for Google Earth Engine (GEE), Google Compute Engine and Scikit-Learn.
 
 This code was developed under this Master thesis:
 http://urn.kb.se/resolve?urn=urn:nbn:se:kth:diva-238727
