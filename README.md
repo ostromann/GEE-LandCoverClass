@@ -27,7 +27,7 @@ Input to the Python scripts:
 
 Output from the Python scripts:
 * cross-validation results (table and graphs)
-* best found classifiers (*.pkl (Scikit-learn persistent model)
+* best found classifiers (*.pkl (Scikit-learn persistent model))
 * learning curves
 * feature importance ranking
 * confusion matrices
