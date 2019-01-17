@@ -93,7 +93,7 @@ def main():
     #set the scoring metrics
     scoring = {'Accuracy': make_scorer(accuracy_score), 'Kappa': make_scorer(cohen_kappa_score)}
     #choose refit metric for Gridsearch
-    refit='Accuracy'
+    refit = 'Accuracy'
 
     #define grid search with cross validation over given parameters
     grid = GridSearchCV(params.pipeline, cv=rskf, n_jobs=-1, param_grid=params.param_grid, scoring=scoring, 
@@ -117,7 +117,7 @@ def main():
 
     #store the cross validation results in a CSV file 
     df = pd.DataFrame(data=grid.cv_results_)
-    save_file(df, 'raw results', save_folder 'raw_results.csv')
+    save_file(df, 'raw results', save_folder + 'raw_results.csv')
 
     #construct and store readable cross-validation results for the different methods
     if option in set(['None', 'Default_SVM']):
@@ -127,7 +127,7 @@ def main():
         df['param_classify__estimator__C']=pd.to_numeric(df['param_classify__estimator__C']) 
         df['param_classify__estimator__gamma']=pd.to_numeric(df['param_classify__estimator__gamma'])
         
-        save_file(df, 'cross validation results', save_folder 'cv_results.csv')
+        save_file(df, 'cross validation results', save_folder + 'cv_results.csv')
         
     elif option in set(['LDA']):
         df['reducer'] = df.apply(lambda row: str(row['param_reduce_dim']).split('(')[0],axis=1)
@@ -136,7 +136,7 @@ def main():
         df['param_classify__estimator__C']=pd.to_numeric(df['param_classify__estimator__C']) 
         df['param_classify__estimator__gamma']=pd.to_numeric(df['param_classify__estimator__gamma'])
 
-        save_file(df, 'cross validation results', save_folder 'cv_results.csv')
+        save_file(df, 'cross validation results', save_folder + 'cv_results.csv')
         
     elif option in set(['MI', 'F_Score']):
         df['reducer'] = df.apply(lambda row: str(row['param_reduce_dim']).split('(')[0],axis=1) 
@@ -146,7 +146,7 @@ def main():
         df['param_classify__estimator__C']=pd.to_numeric(df['param_classify__estimator__C']) 
         df['param_classify__estimator__gamma']=pd.to_numeric(df['param_classify__estimator__gamma'])
 
-        save_file(df, 'cross validation results', save_folder 'cv_results.csv')        
+        save_file(df, 'cross validation results', save_folder + 'cv_results.csv')        
         
     else:
         print('invalid option no results stored')
