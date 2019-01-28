@@ -15,13 +15,13 @@ import numpy as np
 import pandas as pd
 import cv2
 import json
-from swifter import swiftapply
+#from swifter import swiftapply
 
-IN_FILE = 'Beijing_2_UTM_geomee_export.csv'
-OUT_FILE = 'Beijing_geom.csv'
+IN_FILE = 'demo/ee_exports/geom_local_CRS.csv'
+OUT_FILE = 'demo/ee_exports/geom_features.csv'
 
 #read in csv file as Pandas DataFrame
-segments = pd.read_csv(IN_FILE).head(100).drop(['system:index', 'class', 'ID'], axis=1, errors='ignore')
+segments = pd.read_csv(IN_FILE).head(100).drop(['FID', 'class'], axis=1, errors='ignore')
 
 #read tuple of coordinates from geojson
 segments['tuple_coords'] = segments.apply(lambda row: tuple(map(tuple,np.array(json.loads(str(row['.geo']))['coordinates'][0]))),axis=1)
@@ -41,8 +41,11 @@ segments['minAreaRect_width'] = segments.apply(lambda row: row['minAreaRect'][1]
 segments['minAreaRect_height'] = segments.apply(lambda row: row['minAreaRect'][1][1], axis=1)
 segments['minAreaRect_angle'] = segments.apply(lambda row: row['minAreaRect'][2], axis=1)
 
-segments['minAreaRect_aspectRatio'] = segments.apply(lambda row: min(row['minAreaRect_width']/row['minAreaRect_height'], 
-                                                                     row['minAreaRect_height']/row['minAreaRect_width']), 
+segments['minAreaRect_aspectRatio'] = segments.apply(lambda row: int(0)
+                                                     if row['minAreaRect_width']*row['minAreaRect_height'] == 0
+                                                     else 
+                                                     min(row['minAreaRect_width']/row['minAreaRect_height'], 
+                                                         row['minAreaRect_height']/row['minAreaRect_width']), 
                                                      axis=1)
 
 segments['rectangular_fit'] = segments.apply(lambda row: int(0) 
